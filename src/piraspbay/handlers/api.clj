@@ -34,7 +34,7 @@
 (defn accept [req]
   (let [me (-> req :params :me)
         user (-> req :params :user)]
-    [me user]))
+    (if (db/accept-request me user) "ok" "ko")))
 
 (defn delete [req]
   (let [me (-> req :params :me)

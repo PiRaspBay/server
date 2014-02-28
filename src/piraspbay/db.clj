@@ -27,5 +27,24 @@
         friends (vec (remove #{name} names))]
     (find-users friends)))
 
+(defn add-friend [u1, u2]
+  (mc/insert relation-coll {:users [u1 u2]}))
+
+; REQUEST
+
 (defn find-requests [name]
   (map no-id (mc/find-maps request-coll {:to name})))
+
+(defn find-request [me user]
+  (mc/find-one-as-map request-coll {:from me :to user}))
+
+(defn remove-request [me user]
+  (mc/remove request-coll {:from me :to user}))
+
+(defn accept-request [me user]
+  (if (find-request me user)
+    (do
+      (remove-request me user)
+      (add-friend me user)
+      true)
+    false))
