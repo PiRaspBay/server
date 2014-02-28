@@ -11,6 +11,12 @@
 (defn user-json [user] {:name (:name user)
                         :online (online? (:lastSeen user))})
 
+(defn err [status body] {:status status
+                         :headers {"Content-Type" "text/plain; charset=utf-8"}
+                         :body body})
+
+(defn not-found [what] (err 404 (str what " not found!")))
+
 (defn register [req]
   (let [key (-> req :params :key)
         name (-> req :params :name)
@@ -18,16 +24,17 @@
     (ping name key address (time/now))))
 
 (defn auth [handler]
-  (fn [req] (handler req (-> req :params :me))))
+  (fn [req] (if-let [me (db/find-user (-> req :params :me))]
+              (handler req (:name me))
+              (err 401 "Authentication required!"))))
 
 (def profile (auth (fn [req me]
-                     (let [name (-> req :params :user)
-                           user (db/find-user name)]
-                       (user-json user)))))
+                     (if-let [user (db/find-user (-> req :params :user))]
+                       (user-json user)
+                       (not-found "user")))))
 
 (def configure
   (auth (fn [req me]
-          (println me)
           (let [friends (db/find-friends me)]
             (tmpl/configure {:friends friends})))))
 
@@ -36,15 +43,23 @@
 
 (def request (auth (fn [req me] (db/find-requests me))))
 
-
 (def accept (auth (fn [req me]
-                    (let [user (-> req :params :user)]
-                      (if (db/accept-request me user) "ok" "ko")))))
+                    (if-let [user (-> req :params :user)]
+                      (if (db/accept-request me user)
+                        "ok"
+                        (not-found "request"))
+                      (not-found "user")))))
 
 (def decline (auth (fn [req me]
-                     (let [user (-> req :params :user)]
-                       (if (db/remove-request me user) "ok" "ko")))))
+                     (if-let [user (-> req :params :user)]
+                       (if (db/remove-request me user)
+                         "ok"
+                         (not-found "request"))
+                       (not-found "user")))))
 
 (def new-request (auth (fn [req me]
-                         (let [user (-> req :params :user)]
-                           (db/add-request me user)))))
+                         (if-let [user (-> req :params :user)]
+                           (if (db/add-request me user)
+                             "ok"
+                             (err 400 "Can't send this request"))
+                           (not-found "user")))))
