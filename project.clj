@@ -18,10 +18,8 @@
 
                  [http-kit "2.1.17"]
 
-                 [http-kit/dbcp "0.1.0"] ;; database access
-
-                 [mysql/mysql-connector-java "5.1.21"] ;; mysql jdbc driver
-
+                 ;; Time library
+                 [clj-time "0.6.0"]
                  ;; [org.fressian/fressian "0.6.3"]
 
                  ;; for serialization clojure object to bytes

@@ -12,7 +12,7 @@
 (defn no-id [obj] (dissoc obj :_id))
 
 (defn find-user [name]
-  (no-id (mc/find-one user-coll {:name name})))
+  (no-id (mc/find-one-as-map user-coll {:name name})))
 
 (defn find-friends [name]
   (map no-id (mc/find-maps relation-coll {:users name})))
