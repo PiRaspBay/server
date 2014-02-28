@@ -1,13 +1,13 @@
 (ns piraspbay.main
   (:gen-class)
   (:use [piraspbay.config :only [app-configs cfg]]
-        [piraspbay.rasp :only [init-db!]]
         [clojure.tools.cli :only [cli]]
         ;; database access
         ;; [org.httpkit.dbcp :only [use-database! close-database!]]
         [org.httpkit.server :only [run-server]]
         [piraspbay.routes :only [app]]
-        [clojure.tools.logging :only [info]]))
+        [clojure.tools.logging :only [info]])
+  (:require [monger.core :as mg]))
 
 (defn- to-int [s] (Integer/parseInt s))
 
@@ -16,7 +16,9 @@
 (defn start-server []
   ;; stop it if started, for run -main multi-times in repl
   (when-not (nil? @server) (@server))
-  (init-db! (cfg :mongodb))
+  (let [config (cfg :mongodb)]
+    (mg/connect! {:host (:host config) :port (:port config)})
+    (mg/set-db! (mg/get-db (:db config))))
   (reset! server (run-server (app) {:port (cfg :port)
                                     :thread (cfg :thread)})))
 
