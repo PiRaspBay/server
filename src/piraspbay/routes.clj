@@ -13,8 +13,7 @@
 (defroutes server-routes*
   (GET "/" [] app/show-landing)
   (context "/api" []
-           ;; JGET returns json encoding of the response
-           (JGET "/time" [] api/get-time))
+           (JPOST "/register" [] api/register))
   ;; static files under ./public folder, prefix /static
   ;; like /static/css/style.css
   (route/files "/static")
