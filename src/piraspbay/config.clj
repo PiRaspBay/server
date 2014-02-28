@@ -4,7 +4,9 @@
                             :mongodb {:host "127.0.0.1"
                                       :port 27017
                                       :db "piraspbay"
-                                      :rasp-coll "rasp"}}))
+                                      :user-coll "user"
+                                      :request-coll "request"
+                                      :relation-coll "relation"}}))
 
 (defn cfg [key & [default]]
   (if-let [v (or (key @app-configs) default)]

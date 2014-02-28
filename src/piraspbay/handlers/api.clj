@@ -1,5 +1,6 @@
 (ns piraspbay.handlers.api
-  (:use [piraspbay.rasp :only [ping]]))
+  (:use [piraspbay.rasp :only [ping]]
+        [piraspbay.db :as db]))
 
 (defn register [req]
   (defn now [] (.getTime (java.util.Date.)))
@@ -15,7 +16,7 @@
 
 (defn friend [req]
   (let [me (-> req :params :me)]
-       [me]))
+       (db/find-friends me)))
 
 (defn request [req]
   (let [me (-> req :params :me)]

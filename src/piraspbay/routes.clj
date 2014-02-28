@@ -13,8 +13,8 @@
 (defroutes server-routes*
   (JPOST "/register" [] api/register)
   (context "/:me" []
-    (JGET "/:user" [] api/profile)
     (JGET "/friend" [] api/friend)
+    (JGET "/:user" [] api/profile)
     (context "/request" []
       (JGET / [] api/request)
       (JPOST "/:user/accept" [] api/accept)
