@@ -36,6 +36,10 @@
                     (let [user (-> req :params :user)]
                       (if (db/accept-request me user) "ok" "ko")))))
 
+(def decline (auth (fn [req me]
+  (let [user (-> req :params :user)]
+    (if (db/remove-request me user) "ok" "ko")))))
+
 (def delete (auth (fn [req me]
                     (let [user (-> req :params :user)]
                       [me user]))))
