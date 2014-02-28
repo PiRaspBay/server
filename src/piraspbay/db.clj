@@ -14,7 +14,7 @@
 ; USER
 
 (defn find-user [name]
-  (no-id (mc/find-one user-coll {:name name})))
+  (no-id (mc/find-one-as-map user-coll {:name name})))
 
 (defn find-users [names]
   (map no-id (mc/find-maps user-coll {:name {:$in names}})))

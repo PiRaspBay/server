@@ -1,18 +1,24 @@
 (ns piraspbay.handlers.api
   (:use [piraspbay.rasp :only [ping]]
-        [piraspbay.db :as db]))
+        [piraspbay.db :as db])
+  (:require [clj-time.core :as time]
+            [clj-time.coerce :as coerce]))
+
+(defn online? [lastSeen]
+  (time/before? (coerce/from-long lastSeen) (time/minus (time/now) (time/minutes 10))))
 
 (defn register [req]
-  (defn now [] (.getTime (java.util.Date.)))
   (let [key (-> req :params :key)
        name (-> req :params :name)
        address (-> req :remote-addr)]
-       (ping name key address now)))
+       (ping name key address (time/now))))
 
 (defn profile [req]
   (let [me (-> req :params :me)
-       user (-> req :params :user)]
-       [me user]))
+       name (-> req :params :user)
+       user (db/find-user name)]
+       {:name (:name user)
+        :online (online? (:lastSeen user))}))
 
 (defn friend [req]
   (let [me (-> req :params :me)]
