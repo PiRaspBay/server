@@ -12,6 +12,8 @@
                  [compojure "1.1.5"]
                  [ring/ring-core "1.1.8"]
 
+                 [com.novemberain/monger "1.7.0"]
+
                  [org.clojure/data.json "0.2.1"]
 
                  [http-kit "2.1.17"]

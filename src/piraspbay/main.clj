@@ -1,6 +1,7 @@
 (ns piraspbay.main
   (:gen-class)
   (:use [piraspbay.config :only [app-configs cfg]]
+        [piraspbay.rasp :only [init-db!]]
         [clojure.tools.cli :only [cli]]
         ;; database access
         ;; [org.httpkit.dbcp :only [use-database! close-database!]]
@@ -15,12 +16,7 @@
 (defn start-server []
   ;; stop it if started, for run -main multi-times in repl
   (when-not (nil? @server) (@server))
-  ;; if no open database, is noop
-  ;; (db/close-database!)
-  ;; open application global database
-  ;; (db/use-database! "jdbc:mysql://localhost/test" "user" "password")
-
-  ;; other init staff, like init-db, init-redis, ...
+  (init-db! (cfg :mongodb))
   (reset! server (run-server (app) {:port (cfg :port)
                                     :thread (cfg :thread)})))
 
