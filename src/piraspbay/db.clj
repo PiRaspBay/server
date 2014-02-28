@@ -38,8 +38,8 @@
 (defn find-request [me user]
   (mc/find-one-as-map request-coll {:from me :to user}))
 
-(defn remove-request [me user]
-  (mc/remove request-coll {:from me :to user}))
+(defn remove-request [to from]
+  (mc/remove request-coll {:from from :to to}))
 
 (defn accept-request [me user]
   (if (find-request me user)

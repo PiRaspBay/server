@@ -17,7 +17,7 @@
     (context "/request" []
       (JGET "/" [] api/request)
       (JPOST "/:user/accept" [] api/accept)
-      (JDELETE "/:user" [] api/delete)
+      (JDELETE "/:user" [] api/decline)
       (JPOST "/:user" [] api/new-request))
     (JGET "/:user" [] api/profile))
   ;; static files under ./public folder, prefix /static

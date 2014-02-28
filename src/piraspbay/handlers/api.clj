@@ -36,10 +36,10 @@
         user (-> req :params :user)]
     (if (db/accept-request me user) "ok" "ko")))
 
-(defn delete [req]
+(defn decline [req]
   (let [me (-> req :params :me)
         user (-> req :params :user)]
-    [me user]))
+    (if (db/remove-request me user) "ok" "ko")))
 
 (defn new-request [req]
   (let [me (-> req :params :me)
