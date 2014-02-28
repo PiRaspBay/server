@@ -7,3 +7,31 @@
        name (-> req :params :name)
        address (-> req :remote-addr)]
        (ping name key address now)))
+
+(defn profile [req]
+  (let [me (-> req :params :me)
+       user (-> req :params :user)]
+       [me user]))
+
+(defn friend [req]
+  (let [me (-> req :params :me)]
+       [me]))
+
+(defn request [req]
+  (let [me (-> req :params :me)]
+       [me]))
+
+(defn accept [req]
+  (let [me (-> req :params :me)
+       user (-> req :params :user)]
+       [me user]))
+
+(defn delete [req]
+  (let [me (-> req :params :me)
+       user (-> req :params :user)]
+       [me user]))
+
+(defn new-request [req]
+  (let [me (-> req :params :me)
+       user (-> req :params :user)]
+       [me user]))
