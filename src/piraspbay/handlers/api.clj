@@ -28,7 +28,8 @@
 
 (defn request [req]
   (let [me (-> req :params :me)]
-    [me]))
+       (db/find-requests me)))
+
 
 (defn accept [req]
   (let [me (-> req :params :me)

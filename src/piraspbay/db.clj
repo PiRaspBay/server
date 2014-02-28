@@ -26,3 +26,6 @@
         names (distinct (flatten (map :users objs)))
         friends (vec (remove #{name} names))]
     (find-users friends)))
+
+(defn find-requests [name]
+  (map no-id (mc/find-maps request-coll {:to name})))

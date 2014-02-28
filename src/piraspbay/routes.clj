@@ -14,12 +14,12 @@
   (JPOST "/register" [] api/register)
   (context "/:me" []
     (JGET "/friend" [] api/friend)
-    (JGET "/:user" [] api/profile)
     (context "/request" []
-      (JGET / [] api/request)
+      (JGET "/" [] api/request)
       (JPOST "/:user/accept" [] api/accept)
       (JDELETE "/:user" [] api/delete)
-      (JPOST "/:user" [] api/new-request)))
+      (JPOST "/:user" [] api/new-request))
+    (JGET "/:user" [] api/profile))
   ;; static files under ./public folder, prefix /static
   ;; like /static/css/style.css
   (route/files "/static")
