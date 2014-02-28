@@ -45,14 +45,14 @@
 
 (def accept (auth (fn [req me]
                     (if-let [user (-> req :params :user)]
-                      (if (db/accept-request me user)
+                      (if (db/accept-request user me)
                         "ok"
                         (not-found "request"))
                       (not-found "user")))))
 
 (def decline (auth (fn [req me]
                      (if-let [user (-> req :params :user)]
-                       (if (db/remove-request me user)
+                       (if (db/remove-request user me)
                          "ok"
                          (not-found "request"))
                        (not-found "user")))))

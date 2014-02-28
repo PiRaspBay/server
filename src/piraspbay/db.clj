@@ -36,20 +36,20 @@
 
 ; REQUEST
 
-(defn find-requests [name]
-  (map no-id (mc/find-maps request-coll {:to name})))
+(defn find-requests [to]
+  (map no-id (mc/find-maps request-coll {:to to})))
 
-(defn find-request [me user]
-  (mc/find-one-as-map request-coll {:from me :to user}))
+(defn find-request [from to]
+  (mc/find-one-as-map request-coll {:from from :to to}))
 
-(defn remove-request [to from]
+(defn remove-request [from to]
   (mc/remove request-coll {:from from :to to}))
 
-(defn accept-request [me user]
-  (if (find-request me user)
+(defn accept-request [from to]
+  (if (find-request from to)
     (do
-      (remove-request me user)
-      (add-friend me user)
+      (remove-request from to)
+      (add-friend from to)
       true)
     false))
 
