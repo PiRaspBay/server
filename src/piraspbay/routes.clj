@@ -13,11 +13,12 @@
 (defroutes server-routes*
   (JPOST "/register" [] api/register)
   (context "/:me" []
+    (GET "/configure" [] api/configure)
     (JGET "/friend" [] api/friend)
     (context "/request" []
       (JGET "/" [] api/request)
       (JPOST "/:user/accept" [] api/accept)
-      (JDELETE "/:user" [] api/decline)
+      (JDELETE "/:user" [] api/delete)
       (JPOST "/:user" [] api/new-request))
     (JGET "/:user" [] api/profile))
   ;; static files under ./public folder, prefix /static

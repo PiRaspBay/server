@@ -1,7 +1,8 @@
 (ns piraspbay.handlers.api
   (:use [piraspbay.rasp :only [ping]]
         [piraspbay.db :as db])
-  (:require [clj-time.core :as time]
+  (:require [piraspbay.tmpls :as tmpl]
+            [clj-time.core :as time]
             [clj-time.coerce :as coerce]))
 
 (defn online? [lastSeen]
@@ -24,7 +25,11 @@
                            user (db/find-user name)]
                        (user-json user)))))
 
-(def get-config (auth (fn [req me] "config!")))
+(def configure
+  (auth (fn [req me]
+          (println me)
+          (let [friends (db/find-friends me)]
+            (tmpl/configure {:friends friends})))))
 
 (def friend (auth (fn [req me]
                     (map user-json (db/find-friends me)))))
@@ -37,8 +42,8 @@
                       (if (db/accept-request me user) "ok" "ko")))))
 
 (def decline (auth (fn [req me]
-  (let [user (-> req :params :user)]
-    (if (db/remove-request me user) "ok" "ko")))))
+                     (let [user (-> req :params :user)]
+                       (if (db/remove-request me user) "ok" "ko")))))
 
 (def delete (auth (fn [req me]
                     (let [user (-> req :params :user)]
