@@ -8,43 +8,78 @@ db.user.ensureIndex({
 db.user.insert({
   name: 'val',
   key: 'AEeD08o7',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-val',
+    pass: 'sftp-pass',
+    port: 22
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'tdu',
   key: 'f3xbJLG8E',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-tdu',
+    pass: 'sftp-pass',
+    port: 19022
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'jba',
   key: 'f782673Nu',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-jba',
+    pass: 'sftp-pass',
+    port: 19022
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'the',
   key: 'f7888Jjrh',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-the',
+    pass: 'sftp-pass',
+    port: 22
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'renaud',
   key: '9Wjrb234h',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-re',
+    pass: 'sftp-pass',
+    port: 22
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'mamie',
   key: '26fh62ra',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-mamie',
+    pass: 'sftp-pass',
+    port: 23
+  },
   lastSeen: NumberLong("1393592794000")
 });
 db.user.insert({
   name: 'bob',
   key: '99arfytuh3',
-  raspIp: '62.129.6.2',
+  ftp: {
+    ip: '62.129.6.2',
+    user: 'sftp-bob',
+    pass: 'sftp-pass',
+    port: 24
+  },
   lastSeen: NumberLong("1393592794000")
 });
 
@@ -66,7 +101,10 @@ db.request.ensureIndex({
   ['mamie', 'tdu'],
   ['bob', 'jba']
 ].forEach(function(x) {
-  db.request.insert({from: x[0], to: x[1]});
+  db.request.insert({
+    from: x[0],
+    to: x[1]
+  });
 });
 
 db.relation.drop();
@@ -87,5 +125,7 @@ db.relation.ensureIndex({
   ['bob', 'val'],
   ['bob', 'the']
 ].forEach(function(x) {
-  db.relation.insert({users: x});
+  db.relation.insert({
+    users: x
+  });
 });
