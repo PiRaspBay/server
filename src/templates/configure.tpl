@@ -6,7 +6,7 @@
         <default pathversion="1"></default>
         {{#friends}}
         <source>
-            <name>{{ name }}</name>
+            <name>PiRaspBay {{ name }}</name>
             {{#ftp}}
             <path pathversion="1">sftp://{{ user }}:{{ pass }}@{{ ip }}:{{ port }}/./</path>
             {{/ftp}}
