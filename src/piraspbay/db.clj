@@ -56,7 +56,7 @@
 (defn add-request [from to]
   (let [request (find-request from to)]
     (if (is-friend? from to)
-      "ko"
+      false
       (if request
         (no-id request)
         (no-id (mc/insert-and-return request-coll {:from from :to to}))))))
