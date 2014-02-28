@@ -21,6 +21,10 @@
 
 ; FRIEND
 
+(defn is-friend? [me user]
+  (let [friend (mc/find-one-as-map relation-coll {:users {:$all [me user]}})]
+    (if friend true false)))
+
 (defn find-friends [name]
   (let [objs (mc/find-maps relation-coll {:users name})
         names (distinct (flatten (map :users objs)))
@@ -48,3 +52,11 @@
       (add-friend me user)
       true)
     false))
+
+(defn add-request [from to]
+  (let [request (find-request from to)]
+    (if (is-friend? from to)
+      "ko"
+      (if request
+        (no-id request)
+        (no-id (mc/insert-and-return request-coll {:from from :to to}))))))

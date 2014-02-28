@@ -40,10 +40,6 @@
   (let [user (-> req :params :user)]
     (if (db/remove-request me user) "ok" "ko")))))
 
-(def delete (auth (fn [req me]
-                    (let [user (-> req :params :user)]
-                      [me user]))))
-
 (def new-request (auth (fn [req me]
                          (let [user (-> req :params :user)]
-                           [me user]))))
+                           (db/add-request me user)))))
