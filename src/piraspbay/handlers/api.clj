@@ -16,7 +16,7 @@
 
 (defn friend [req]
   (let [me (-> req :params :me)]
-       (db/find-friends me)))
+       (to-public (db/find-friends me))))
 
 (defn request [req]
   (let [me (-> req :params :me)]
