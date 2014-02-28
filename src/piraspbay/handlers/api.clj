@@ -16,32 +16,30 @@
         address (-> req :remote-addr)]
     (ping name key address (time/now))))
 
-(defn profile [req]
-  (let [me (-> req :params :me)
-        name (-> req :params :user)
-        user (db/find-user name)]
-    (user-json user)))
+(defn auth [handler]
+  (fn [req] (handler req (-> req :params :me))))
 
-(defn friend [req]
-  (let [me (-> req :params :me)]
-    (map user-json (db/find-friends me))))
+(def profile (auth (fn [req me]
+                     (let [name (-> req :params :user)
+                           user (db/find-user name)]
+                       (user-json user)))))
 
-(defn request [req]
-  (let [me (-> req :params :me)]
-       (db/find-requests me)))
+(def get-config (auth (fn [req me] "config!")))
+
+(def friend (auth (fn [req me]
+                    (map user-json (db/find-friends me)))))
+
+(def request (auth (fn [req me] (db/find-requests me))))
 
 
-(defn accept [req]
-  (let [me (-> req :params :me)
-        user (-> req :params :user)]
-    (if (db/accept-request me user) "ok" "ko")))
+(def accept (auth (fn [req me]
+                    (let [user (-> req :params :user)]
+                      (if (db/accept-request me user) "ok" "ko")))))
 
-(defn delete [req]
-  (let [me (-> req :params :me)
-        user (-> req :params :user)]
-    [me user]))
+(def delete (auth (fn [req me]
+                    (let [user (-> req :params :user)]
+                      [me user]))))
 
-(defn new-request [req]
-  (let [me (-> req :params :me)
-        user (-> req :params :user)]
-    [me user]))
+(def new-request (auth (fn [req me]
+                         (let [user (-> req :params :user)]
+                           [me user]))))
